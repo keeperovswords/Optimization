@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.5.1">Jekyll</generator><link href="http://localhost:4000/Optimization/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/Optimization/" rel="alternate" type="text/html" /><updated>2017-08-14T10:51:57+02:00</updated><id>http://localhost:4000/Optimization/</id><title type="html">Optimization</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+</subtitle><author><name>Jian Xi</name></author><entry><title type="html">Duality</title><link href="http://localhost:4000/Optimization/main/2017/06/20/dualtiy.html" rel="alternate" type="text/html" title="Duality" /><published>2017-06-20T09:11:00+02:00</published><updated>2017-06-20T09:11:00+02:00</updated><id>http://localhost:4000/Optimization/main/2017/06/20/dualtiy</id><content type="html" xml:base="http://localhost:4000/Optimization/main/2017/06/20/dualtiy.html">&lt;h1&gt;Basic Problem Settings&lt;/h1&gt;
+&lt;p&gt;Considering we have a optimization that has the following form:&lt;/p&gt;
+
+&lt;p&gt;\begin{equation}\label{eq:standardoptform}
+\begin{aligned}
+\min \qquad &amp;amp; f_0(\vec{x}) &lt;br /&gt;
+\text{s. t. }\qquad &amp;amp; f_i(\vec{x}) \le 0, i = 1, \dots, m,&lt;br /&gt;
+ \qquad &amp;amp;  h_i(\vec{x})  = 0, i = 1, \dots, p&lt;br /&gt;
+\end{aligned}
+\end{equation}&lt;/p&gt;
+
+&lt;p&gt;where $f_0(\vec{x})$ is the &lt;b&gt;objective function&lt;/b&gt;, $\vec{x} \in \mathbb{R}^{n \times 1}, f_i(\vec{x}) $ is &lt;b&gt;inequality constraints&lt;/b&gt; and $h_i(\vec{x})$ is &lt;b&gt;equality constraints&lt;/b&gt;. The domain of this problem $\mathcal{D} = \bigcap^m_{i = 0} &lt;b&gt;dom&lt;/b&gt;f_i  \cap \bigcap^p_{i = 1} &lt;b&gt;dom&lt;/b&gt; h_i $, assume it’s no empty. the optimal value of \ref{eq:standardoptform} is denoted as $p^\star$. That’s the basis of our problem. This is normally called as &lt;b&gt;primal problem&lt;/b&gt;.&lt;/p&gt;
+
+&lt;h1&gt;Lagrangian&lt;/h1&gt;
+&lt;p&gt;The basic idea in Lagrangian duality is to take the constrains $f_i(\vec{x}), h_i(\vec{x})$ into account by augmenting the objective function with weighted sum of the constraints functions. From this view point we define &lt;b&gt;generalized Lagrangian &lt;/b&gt;function $\mathit{L}: \mathbb{R}^n \times \mathbb{R}^m \times \mathbb{R}^p \rightarrow \mathbb{R}$ associated with \ref{eq:standardoptform}:&lt;/p&gt;
+
+&lt;p&gt;\begin{equation}\label{eq:lagrangian}
+	\mathit{L}\left(\vec{x, \lambda, \nu} \right) = f_0(\vec{x}) + \sum_{i=1}^{m} \lambda_i f_i(\vec{x} + \sum_{i=1}^{p} \nu_i h_i(\vec{x}), 
+\end{equation}&lt;/p&gt;
+
+&lt;p&gt;with &lt;b&gt;dom&lt;/b&gt;$\mathit{L} = \mathcal{D} \times \mathbb{R}^m \times \mathbb{R}^p$. The $\lambda_i$ associated with $i$th inequality, constraint $f_i(x) \le 0$ is so called &lt;b&gt;Lagrannge Multiplier&lt;/b&gt;. Similarly we have $\nu_i$ associated with equality constraint $h_i(\vec{x}) = 0$. The vecor $\vec{\lambda, \nu}$ are called &lt;b&gt;Lagrange multiplier vecors&lt;/b&gt; or &lt;b&gt;dual variables&lt;/b&gt; associated with problem \ref{eq:standardoptform}. Considering the following quantity:
+\begin{equation}\label{eq:maxlagrangian}
+	\theta_\mathcal{P}(\vec{x}) = \max_{\vec{\lambda, \nu}, \lambda_i \ge 0} \mathit{L}(\vec{x, \lambda, \nu}),
+$$
+where subscript $\mathcal{P}$ indicates the primal problem. It can be easily verify that:&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\theta_\mathcal{P}(\vec{x}) =
+	\begin{cases}
+	f(\vec{x}) &amp; \text{if } \vec{x} \text{ satisfies primal constraints}\\
+	f_0(\vec{x}) + \sum_{i=1}^{m} \lambda_i f_i(\vec{x} + \sum_{i=1}^{p} \nu_i h_i(\vec{x}) = \infty &amp; \text{otherwise}
+	\end{cases} %]]&gt;&lt;/script&gt;
+This quantity implies that the $\theta_\mathcal{P}(\vec{x})$ takes the same value as objective in primal problem where $\vec{x}$ satisfies all primal constraints, and positive infinity if the constraints are violated. Hence, if we perform a min operation in \ref{eq:maxlagrangian}, we have&lt;/p&gt;
+
+&lt;p&gt;\begin{equation}\label{eq:minmaxlagrangian}
+		\min_\vec{x}\theta_\mathcal{P}(\vec{x}) = \min_\vec{x}\max_{\vec{\lambda, \nu}, \lambda_i \ge 0} \mathit{L}(\vec{x, \lambda, \nu}),
+$$&lt;/p&gt;
+
+&lt;p&gt;it give us also the same solution to our primal problem, its optimal values  denoted as $p^\star = \min_\vec{x}\theta_\mathcal{P}(\vec{x}) $.&lt;/p&gt;
+&lt;h1&gt;The Lagrange Dual Function&lt;/h1&gt;
+&lt;p&gt;We define the &lt;b&gt;Lagrange dual&lt;/b&gt; or &lt;b&gt;dual &lt;/b&gt;function $g: \mathbb{R}^m \times \mathbb{R}^p \rightarrow \mathbb{R}$ as the &lt;b&gt;minimum value&lt;/b&gt; of the \ref{eq:lagrangian} over $\vec{x}$:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\label{eq:dualfunction}
+	g(\vec{\lambda, \nu}) = \inf_{\vec{x} \in \mathcal{D}} \mathit{L}\left(\vec{x, \lambda, \nu} \right) = \inf_{\vec{x} \in \mathcal{D}} \left( f_0(\vec{x}) + \sum_{i=1}^{m} \lambda_i f_i(\vec{x}  +\sum_{i = 1}^p h_i(\vec{x_i})\right).&lt;/script&gt;
+
+&lt;p&gt;As it shows, the dual function \ref{eq:dualfunction} yields lower bounds on the optimal value $p^\star$ of the problem \ref{eq:standardoptform} or the equivalent problem \ref{eq:minmaxlagrangian}.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\label{eq:lowerbound}
+\begin{aligned}
+	\text{For any }&amp; \vec{\lambda} \ge 0 \text{ and any } \vec{\nu}: \\
+	&amp;g(\vec{\lambda, \mu}) \le p^\star.
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;h1&gt;Linear Approximation Interpretation&lt;/h1&gt;
+&lt;p&gt;The Lagrangien \ref{eq:lagrangian} and lower bound \ref{eq:lowerbound} can be explained by a linear approximation based on indicator function of sets $\mathbf{0}$ and -$\mathbb{R}_{+}$. The primal problem \ref{eq:standardoptform} can be reformed as follows:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\label{eq:indicatorapprox}
+	\min f_0(\vec{x}) + \sum_{i=1}^{m} \mathbf{I}_\_\left( f_i(\vec{x}) \right) +\sum_{i= 1}^{p} \mathbf{I}_0\left( h_i(\vec{x}) \right),&lt;/script&gt;
+
+&lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;\mathbf{I}_: \mathbb{R} \rightarrow \mathbb{R}&lt;/script&gt; is the indicator function for the nonpositive reals, and corresponds to the inequality constraints $f_i(\vec{x})$:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\mathbf{I}_(u) = 
+\begin{cases}
+ 0 &amp; u &lt; 0\\
+ \infty &amp; u &gt; 0. \\
+\end{cases} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;When the inequality constraint is satisfied, we get a  zero, otherwise we get a $\infty$. It delivers a measurement associated with the value of constraint $u = f_i(\vec{x})$.
+Similarly, $\mathbf{I}_0$ corresponds to the value of the equality constraints $u = h_i(\vec{x})$. The problem \ref{eq:indicatorapprox} is then can be linear approximated as follows:&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;\min \mathit{L}\left(\vec{x, \lambda, \nu} \right) =f_0(\vec{x}) + \sum_{i=1}^{m} \lambda_i f_i(\vec{x}) + \sum_{i=1}^p \nu_i h_i(\vec{x}).&lt;/script&gt;
+The indicator functions $\mathbf{I}__, \mathbf{I}_0$ are replaced with linear combination involved with dual variables. As it shows, the linear function is an &lt;b&gt;underestimator&lt;/b&gt; of the indicator function.&lt;/p&gt;
+
+&lt;h1&gt;The Lagrange Dual Problem&lt;/h1&gt;
+&lt;p&gt;For each pair of $(\vec{\lambda, \nu})$ with $\vec{\lambda} \ge 0$, the Lagrange dual function provides a lower bound on the optimal value $p^\star$ of the primal problem \ref{eq:standardoptform}. Hence what’s the best lower bound that can be obtained from Lagrange dual function should be acquired. This leads to the optimization problem as given:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\label{eq:dualproblem}
+\begin{aligned}
+\max\qquad &amp; g(\vec{\lambda, \nu})\\
+\text{s. t. }\qquad &amp; \vec{\lambda} \succeq 0.
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;This optimization problem is, in order to treat it with the primal problem separately, therefore called &lt;b&gt;Lagrange dual problem&lt;/b&gt;. The dual pair $(\vec{\lambda^\star, \nu})$ is called &lt;b&gt;dual optimal &lt;/b&gt; or  &lt;b&gt;optimal Lagrange multipliers&lt;/b&gt; if they are optimal for the problem \ref{eq:dualproblem}.&lt;/p&gt;
+
+&lt;p&gt;For clearly declaring the relation between primal and dual problem, we rewrite the function in \ref{eq:dualfunction} with new notation without changing meaning of origin as following:&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;\label{eq:dualform}
+	\theta_\mathcal{D}(\vec{\lambda, \nu}) = \min_\vec{x} \mathit{L}(\vec{x, \lambda, \nu})&lt;/script&gt;
+In contrast to Lagrangian \ref{eq:maxlagrangian}, where we maximize the Lagrangian with respect to lagrangian multipliers $\vec{\lambda}, \vec{\nu}$, now we minimize the same Lagrangian over $\vec{x}$. Now let’s do the same rewriting notation thing for the dual problem \ref{eq:dualproblem}, we have&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;\max_{\vec{\lambda}, \vec{\nu}; \lambda_i \ge 0}\theta_\mathcal{D}(\vec{\lambda, \nu}) = \max_{\vec{\lambda}, \vec{\nu}; \lambda_i \ge 0}\min_\vec{x} \mathit{L}(\vec{x, \lambda, \nu})&lt;/script&gt;
+Actually there is no change but the oder of $\max$ and $\min$ operations. The optimal value of dual problem is denoted as $d^\star = \max_{\vec{\lambda}, \vec{\nu}; \lambda_i \ge 0}\theta_\mathcal{D}(\vec{\lambda, \nu})$. It can also be easily to verify that&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+	d^\star = &amp;\max_{\vec{\lambda}, \vec{\nu}; \lambda_i \ge 0}\min_\vec{x} \mathit{L}(\vec{x, \lambda, \nu}) \le \min_\vec{x}\max_{\vec{\lambda, \nu}, \lambda_i \ge 0} \mathit{L}(\vec{x, \lambda, \nu}) = p^\star\\
+	d^\star = &amp;\max_{\vec{\lambda}, \vec{\nu}; \lambda_i \ge 0}\theta_\mathcal{D}(\vec{\lambda, \nu}) \le \min_\vec{x}\theta_\mathcal{P}(\vec{x}) = p^\star\\
+	d^\star &amp;\le  p^\star
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;Under some certain conditions, we have $d^\star =  p^\star$, i.e. we solve the dual problem as equivalently as we solve the primal problem. This conditions are related actually to &lt;b&gt;Karush-Kuhn-Tucker (KKT) conditions&lt;/b&gt; in section \ref{ch:kkt}.
+It’s clear that the dual problem is always convex.&lt;/p&gt;
+&lt;h2&gt;Weak Duality&lt;/h2&gt;
+&lt;p&gt;The optimal value of \ref{eq:dualproblem} is denoted as $d^\star$, is the best lower bound on $p^\star$ that can be obtained form the Lagrange dual problem. In particular, we have the following inequality:&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;d^\star \le p^\star,&lt;/script&gt;
+which holds if the primal problem is not convex. This relation is denoted as &lt;b&gt;weak duality&lt;/b&gt;. The difference $d^\star - p^\star$ is called &lt;b&gt;optimal dual gap&lt;/b&gt; of the original problem. It postulates the gap between the optimal value of original problem and the lowest bound on it that can be obtained from the dual problem. This is gap is always nonnegative.&lt;/p&gt;
+
+&lt;h2&gt;Strong Duality&lt;/h2&gt;
+&lt;p&gt;Conversely, it the difference of optimal value of dual problem and primal problem is zero, i.e. $d^\star = p^\star$, then it’s denoted as &lt;b&gt;strong duality&lt;/b&gt;. Strong duality is not always guarantee. e.g. the problem has the following form:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+\min &amp; f_0(\vec{x})\\
+\text{s. t. } &amp; f_i(\vec{x}) \le 0, i = 1, \dots, m\\
+ &amp; \mathbf{A}(\vec{x}) = \vec{b},\\
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;with $f_0, \dots, f_m$ is convex, in this case
+we can have strong duality, but not always. Hence we want to some conditions beyond convexity, based which the strong duality holds. These conditions are called &lt;b&gt;constraint qualifications&lt;/b&gt;. One of those constraint qualifications is the &lt;b&gt;Slater’s condition&lt;/b&gt;: there exists an $\vec{x} \in &lt;b&gt;relint&lt;/b&gt;\mathcal{D}$ such that&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+f_i(\vec{x}) &lt; 0, i = 1, \dots, m, \qquad \mathbf{A}\vec{x} = \vec{b}. %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;such a point is sometimes called &lt;b&gt;strictly feasible&lt;/b&gt;,since the inequalities are hold strictly. Summarily to say, Slater’s conditions make sure that strong duality holds, if the Slater’s conditions holds (and the problem is convex).&lt;/p&gt;
+
+&lt;p&gt;This conditions can be refined when some of the inequality constraints are affine. If the first $k$ function $f_1, \dots, f_k$ are affine, then the strong duality holds provided the following weaker condition holds: There exists an $\vec{x} \in &lt;b&gt;relint&lt;/b&gt;\mathcal{D}$ with:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+f_i(\vec{x}) \le 0, i = 1, \dots, k, \qquad f_i(\vec{x}) &lt; 0, i = k + 1, \dots, m, \qquad \mathbf{A}\vec{x} = \vec{b}. %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;It states that the affine function does not need to hold  the inequality constraints strictly.
+\subsection{Perturbation and Sensitivity Analysis}
+When strong duality obtains, the optimal dual variables provide very useful information about the sensitivity of the optimal value with respect to the perturbations of the constraints. Let’s recap the primal problem \ref{eq:standardoptform} again, it’s restated as follows:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+\min &amp; f_0(\vec{x})\\
+\text{s. t. } &amp; f_i(\vec{x}) \le 0, i = 1, \dots, m\\
+ &amp; h_i(\vec{x}) = 0, i = 1, \dots, p,\\
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;where we have inequality constraints $f_i$ and equality constraints $h_i$. We’d like to make a slight modification in this primal problem as given by:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\label{eq:perturbedproblem}
+\begin{aligned}
+\min &amp; f_0(\vec{x})\\
+\text{s. t. } &amp; f_i(\vec{x}) \le u_i, i = 1, \dots, m\\
+ &amp; h_i(\vec{x}) = v_i, i = 1, \dots, p,\\
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;with variable $\vec{x} \in \mathbf{R}^n$ as before we have. It’s clearly to notice that the \ref{eq:standardoptform} is a special case when $\vec{u} = 0, \vec{v} = 0$. This modified problem is called &lt;b&gt;perturbed problem&lt;/b&gt;. Specifically to formulate, the $u_i$ is used to tight or relax the inequality constraints, when it’s negative or positive respectively. Similarly we have the same effect in equality constraints by changing its right side $v_i$. The optimal value $p^\star(u,v)$ of the perturbed problem \ref{eq:perturbedproblem} is defined as follows:
+&lt;script type=&quot;math/tex&quot;&gt;p^\star(\vec{u,v}) = \inf \left\{ f_0(\vec{x})| \exists \vec{x} \in \mathcal{D}, f_i(\vec{x}) \le u_i, i = 1, \dots, m, \quad h_i(\vec{x})  = v_i, i = 1, \dots, p\right\}.&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;It’s clear that $p^\star(0,0) = p^\star$ of the primal problem in \ref{eq:standardoptform}.&lt;/p&gt;
+&lt;h2&gt;Global Inequality&lt;/h2&gt;
+&lt;p&gt;If the strong duality holds and the dual optimum is attained, then we have the following inequality:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\label{eq:globalequaity}
+	p^\star(\vec{u,v}) \ge p^\star(0,0) - \vec{\lambda}^{\star T} \vec{u} - \vec{\nu}^{\star T} \vec{v}.&lt;/script&gt;
+
+&lt;p&gt;where $(\vec{\lambda}^\star, \vec{\nu}^{\star})$ the optimal value for dual problem \ref{eq:dualproblem} of the unperturbed one. In order to get this inequality, we assume that $\vec{x}$ is a feasible point fo the perturbed problem, according to the optimal dual we have:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+	p^\star(\vec{0, 0}) = g(\vec{\lambda}^\star, \vec{\nu}^\star) &amp;\le f_0(\vec{x}) + \sum_{i = 1}^{m} \lambda^\star_i f_i(\vec{x}) + \sum_{i = 1}^{p} \nu^\star_i h_i(\vec{x})\\
+	&amp; \le f_0(\vec{x}) + \vec{\lambda}^{\star T} \vec{u} + \vec{\nu}^{\star T} \vec{v}.
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;We can also resolve a the following inequality:
+&lt;script type=&quot;math/tex&quot;&gt;f_0(\vec{x}) \ge p(\vec{0,0}) - \vec{\lambda}^{\star T} \vec{u} - \vec{\nu}^{\star T} \vec{v}&lt;/script&gt;&lt;/p&gt;
+
+&lt;h1&gt;Complementary Slackness&lt;/h1&gt;
+&lt;p&gt;Suppose that the primal and the dual problem are feasible and they have the optimal values separately and the strong duality holds, i.e. the dual gap is zero. Let $\vec{x}^\star$ the be primal optimal and $\vec{\lambda}^\star, \vec{\nu}^\star$ be dual optimal. This can be formally formalized as&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+	p^\star &amp;= d^\star \\ 
+	f_0(\vec{x}^\star) &amp;=  g(\vec{\lambda^\star, \nu^\star}) \\
+	&amp;= \inf_\vec{x} \mathit{L}\left(\vec{x, \lambda^\star, \nu^\star} \right) = \inf_\vec{x} \left(f_0(\vec{x}) + \sum_{i=1}^{m} \lambda_i f_i(\vec{x}) + \sum_{i=1}^{p} \nu_i h_i(\vec{x})\right) \\
+	&amp;= \theta_\mathcal{D}(\vec{\lambda^\star, \nu^\star}) = \min_\vec{x} \mathit{L}(\vec{x, \lambda^\star, \nu^\star})\\
+	&amp;\le f_0(\vec{x}^\star) + \sum_{i=1}^{m} \lambda_i f_i(\vec{x}) + \sum_{i=1}^{p} \nu_i h_i(\vec{x})\\
+	&amp; \le f_0(\vec{x}^\star)
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;h2&gt;KKT Optimality Conditions&lt;/h2&gt;
+&lt;p&gt;Now we assume that the objective function, all inequality and equality constraints are differential.
+\subsubsection{KKT Conditions for Nonconvex Problems}
+We use the same notation in the last section, let $\vec{x}^\star$ the be primal optimal and $\vec{\lambda}^\star, \vec{\nu}^\star$ be dual optimal and strong duality holds. Since $\vec{x}^\star$ minimizes the Lagrangian $\mathit{L}$ over $\vec{x}$, it implies the gradient of this function must be vanished at $\vec{x}^\star$, formally it can be formalized as&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\nabla f_0(\vec{x}^\star)  + \sum_{i=1}^{m} \lambda_i \nabla f_i(\vec{x}^\star) + \sum_{i=1}^{p} \nu_i \nabla h_i(\vec{x}^\star) = 0.&lt;/script&gt;
+
+&lt;p&gt;Put the all settings of primal problem and this quantity together, we have&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\label{eq:kkt}
+\begin{aligned}
+	f_i(\vec{x}^\star) \le &amp; 0 , i = 1, \dots, m \\
+	h_i(\vec{x}^\star) =&amp;  0, i = 1, \dots, p \\
+	\lambda_i^\star \ge &amp;  0, i = 1, \dots, m \\
+	\lambda_i^\star f_i(\vec{x}^\star) =&amp;  0, i = 1, \dots, m \\
+	\nabla f_0(\vec{x}^\star)  + \sum_{i=1}^{m} \lambda_i \nabla f_i(\vec{x}^\star) + \sum_{i=1}^{p} \nu_i \nabla h_i(\vec{x}^\star) = &amp;0.
+\end{aligned} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;This statement is called &lt;b&gt;Karush-Kuhn-Tucker&lt;/b&gt; (KKT) conditions. The first and seconds are the original conditions for primal problem. The third line is the condition of Lagrangian $\mathit{L}$. The forth line is so called &lt;b&gt;Complementary slackness&lt;/b&gt; or &lt;b&gt;dual complementarity&lt;/b&gt; condition. This condition states that when $\lambda_i &amp;gt; 0$,  then $\lambda_i f_i(\vec{x}) = 0$. It implies also the primal inequality constraint $f_i(x)$ is \textit{active} in a way that holds equality rather than inequality.&lt;/p&gt;
+
+&lt;p&gt;What these quantities state is, for any optimization problem with differentiable objective and constraints, for which strong duality holds, any pair of primal and dual optimal points must satisfy the KKT conditions \ref{eq:kkt}.
+\subsubsection{KKT Conditions for Convex Problems}
+If the $f_i$s are convex and $h_i$ is affine, than for any feasible point $\tilde{x}, \tilde{\lambda}, \tilde{\nu}$, the KKT conditions holds:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{aligned}
+		f_i(\tilde{\vec{x}}) \le 0 &amp;, i = 1, \dots, m \\
+		h_i(\tilde{\vec{x}}) =  0&amp;, i = 1, \dots, p \\
+		\tilde{\lambda}_i \ge  0&amp;, i = 1, \dots, m \\
+		\tilde{\lambda}_i f_i(\tilde{x}) =  0&amp;, i = 1, \dots, m \\
+		\nabla f_0(\tilde{\vec{x}})  + \sum_{i=1}^{m} \tilde{\lambda}_i \nabla f_i(\tilde{\vec{x}}) + \sum_{i=1}^{p} \nu_i \nabla h_i(\tilde{\vec{x}}) &amp;= 0.
+\end{aligned} %]]&gt;&lt;/script&gt;</content><author><name>Jian Xi</name></author><summary type="html">Basic Problem Settings Considering we have a optimization that has the following form:</summary></entry></feed>
